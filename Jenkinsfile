@@ -3,6 +3,10 @@ pipeline {
    tools {
       maven 'M2_HOME' 
    }
+   environment {
+      registry = "zuzukaka/devops-pipeline"
+      registryCredential = 'DockerID'
+   }
   stages {
     stage('Build'){
       steps {
@@ -19,15 +23,11 @@ pipeline {
     }
      stage('Deploy'){
       steps {
-        echo "deploy step"
-        sleep 10
+         script {
+            docker.build registry + ":$BUILD_NUMBER"
+         }
+        
       }
-    }
-     stage('docker'){
-      steps {
-        echo "image step"
-        sleep 10
-      }
-    }
+    } 
   }  
   }
